@@ -51,6 +51,6 @@ class StoreController extends Controller
         $store->delete();
 
         flash('Loja Removida com sucesso')->success();
-        return redirect('admin.stores.index');
+        return redirect()->route('admin.stores.index');
     }
 }
