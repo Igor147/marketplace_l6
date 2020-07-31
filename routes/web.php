@@ -14,10 +14,11 @@
 use App\Store;
 use App\User;
 
+
 Route::get('/', function () {
     $helloWorld = 'Hello Word!';
     return view('welcome', ['helloWorld'=> $helloWorld]);
-});
+})->name('home');
 
 Route::get('/model', function(){
     $products = \App\Product::all();
@@ -78,8 +79,6 @@ Route::get('/model', function(){
 //     dd($product);
 
 
-
-
     // \App\Category::create([
     //     'name' => 'Games',
     //     'description' => null,
@@ -100,18 +99,24 @@ Route::get('/model', function(){
     return \App\User::all();
 });
 
-
-Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
-
-    // Route::prefix('stores')->name('stores.')->group(function(){
-    //     Route::get('/','StoreController@index')->name('index');   
-    //     Route::get('/create','StoreController@create')->name('create'); 
-    //     Route::post('/store','StoreController@store')->name('store'); 
-    //     Route::get('/{store}/edit','StoreController@edit')->name('edit'); 
-    //     Route::post('/update/{store}','StoreController@update')->name('update'); 
-    //     Route::get('/destroy/{store}','StoreController@destroy')->name('destroy');
-    // });
+Route::group(['middleware'=>['auth']], function(){
     
-    Route::resource('stores', 'StoreController');
-    Route::resource('products', 'ProductController');
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function(){
+
+        // Route::prefix('stores')->name('stores.')->group(function(){
+        //     Route::get('/','StoreController@index')->name('index');   
+        //     Route::get('/create','StoreController@create')->name('create'); 
+        //     Route::post('/store','StoreController@store')->name('store'); 
+        //     Route::get('/{store}/edit','StoreController@edit')->name('edit'); 
+        //     Route::post('/update/{store}','StoreController@update')->name('update'); 
+        //     Route::get('/destroy/{store}','StoreController@destroy')->name('destroy');
+        // });
+        
+        Route::resource('stores', 'StoreController');
+        Route::resource('products', 'ProductController');
+    });
 });
+
+Auth::routes();
+
+//Route::get('/home', 'HomeController@index')->name('home');
